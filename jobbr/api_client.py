@@ -26,11 +26,6 @@ class JobAPIClient:
         self.headers = {'Authorization': f'Bearer {api_key}'}
         self.simulate = simulate  # Flag to toggle between real and simulated requests
 
-    # @retry(
-    #     stop=stop_after_attempt(3),
-    #     wait=wait_exponential(multiplier=1, min=2, max=10),
-    #     retry=retry_if_exception_type(requests.exceptions.RequestException)
-    # )
 
     def _make_request(self, method, endpoint, **kwargs):
         """
@@ -51,6 +46,10 @@ class JobAPIClient:
                 return JobAPISimulator.simulate_queue_job(kwargs.get('json', {}).get('job_id'))
             elif '/jobs' in endpoint:
                 return JobAPISimulator.simulate_create_job(kwargs.get('json', {}))
+            elif 'delete' in endpoint:
+                return JobAPISimulator.simulate_delete_job(kwargs.get('json', {}).get('job_id'))
+            elif 'update' in endpoint:
+                return JobAPISimulator.simulate_update_job(kwargs.get('json', {}))
             else:
                 return {"error": "Unknown endpoint"}
 
@@ -120,4 +119,34 @@ class JobAPIClient:
             return response
         except Exception as e:
             logger.error(f"Failed to create job: {e}")
+            return {"error": str(e)}
+    
+    def update_job(self, job_id, job_data):
+        """
+        Updates an existing job's details.
+
+        :param job_id: The ID of the job to update.
+        :param job_data: A dictionary containing the updated job data.
+        :return: The result of the update operation (simulated or real).
+        """
+        try:
+            response = self._make_request("PUT", f"/jobs/{job_id}", json=job_data)
+            logger.info(f"Updated job successfully: {job_data}")
+            return response
+        except Exception as e:
+            logger.error(f"Failed to update job: {e}")
+            return {"error": str(e)}
+    
+    def delete_job(self, job_id):
+        """
+        Deletes a job by ID.
+
+        :param job_id: The ID of the job to delete.
+        :return: The result of the deletion operation (simulated or real).
+        """
+        try:
+            response = self._make_request("DELETE", f"/jobs/{job_id}")
+            logger.info(f"Deleted job successfully: {job_id}")
+        except Exception as e:
+            logger.error(f"Failed to delete job: {e}")
             return {"error": str(e)}

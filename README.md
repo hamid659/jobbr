@@ -62,6 +62,12 @@ Commands
 - Create a Job
 ``` jobbr create-job --name <job_name> --priority <priority_level> ```
 
+- Update a Job
+``` jobbr update-job <job_id> ```
+
+- Delete a Job
+``` jobbr delete-job <job_id> ```
+
 ## API simulation
 The simulate flag has been added to the view_jobs, view_queued_jobs, queue_job, and create_job commands using @click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.").
 
