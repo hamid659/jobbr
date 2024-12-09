@@ -7,6 +7,9 @@ from jobbr.api_client import JobAPIClient
 BASE_URL = os.getenv("JOBBR_API_BASE_URL")  
 API_KEY = os.getenv("JOBBR_API_KEY") 
 
+# Define a global simulate flag that can be toggled in CLI commands
+simulate_flag = False
+
 # Validate that the API key is set
 if not API_KEY:
     raise ValueError("API key is not set. Please set the JOBBR_API_KEY environment variable.")
@@ -20,46 +23,56 @@ def cli():
     pass
 
 @cli.command()
-def view_jobs():
+@click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.")
+def view_jobs(simulate):
     """View all jobs"""
+    # Use the simulate flag to toggle simulation mode
+    client = JobAPIClient(base_url=BASE_URL, api_key=API_KEY, simulate=simulate)
     response = client.get_jobs()
-    if response.ok:
-        jobs = response.json()
-        click.echo(f"Jobs: {jobs}")
+    if isinstance(response, dict) and "error" in response:
+        click.echo(f"Error: {response['error']}")
     else:
-        click.echo(f"Failed to fetch jobs: {response.status_code}")
+        click.echo(f"Jobs: {response}")
 
 @cli.command()
-def view_queued_jobs():
+@click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.")
+def view_queued_jobs(simulate):
     """View queued jobs"""
+    # Use the simulate flag to toggle simulation mode
+    client = JobAPIClient(base_url=BASE_URL, api_key=API_KEY, simulate=simulate)
     response = client.get_queued_jobs()
-    if response.ok:
-        jobs = response.json()
-        click.echo(f"Queued Jobs: {jobs}")
+    if isinstance(response, dict) and "error" in response:
+        click.echo(f"Error: {response['error']}")
     else:
-        click.echo(f"Failed to fetch queued jobs: {response.status_code}")
+        click.echo(f"Queued Jobs: {response}")
 
 @cli.command()
 @click.argument('job_id')
-def queue_job(job_id):
+@click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.")
+def queue_job(job_id, simulate):
     """Queue a job by ID"""
+    # Use the simulate flag to toggle simulation mode
+    client = JobAPIClient(base_url=BASE_URL, api_key=API_KEY, simulate=simulate)
     response = client.queue_job(job_id)
-    if response.ok:
-        click.echo(f"Job {job_id} queued successfully.")
+    if isinstance(response, dict) and "error" in response:
+        click.echo(f"Error: {response['error']}")
     else:
-        click.echo(f"Failed to queue job {job_id}: {response.status_code}")
+        click.echo(f"Job {job_id} queued successfully.")
 
 @cli.command()
 @click.option('--name', prompt='Job Name', help='Name of the job')
 @click.option('--type', prompt='Job Type', help='Type of the job')
-def create_job(name, type):
+@click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.")
+def create_job(name, type, simulate):
     """Create a new job"""
     job_data = {"name": name, "type": type}
+    # Use the simulate flag to toggle simulation mode
+    client = JobAPIClient(base_url=BASE_URL, api_key=API_KEY, simulate=simulate)
     response = client.create_job(job_data)
-    if response.ok:
-        click.echo(f"Job created successfully: {response.json()}")
+    if isinstance(response, dict) and "error" in response:
+        click.echo(f"Error: {response['error']}")
     else:
-        click.echo(f"Failed to create job: {response.status_code}")
+        click.echo(f"Job created successfully: {response}")
 
 if __name__ == '__main__':
     cli()

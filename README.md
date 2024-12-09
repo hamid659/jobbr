@@ -62,6 +62,15 @@ Commands
 - Create a Job
 ``` jobbr create-job --name <job_name> --priority <priority_level> ```
 
+## API simulation
+The simulate flag has been added to the view_jobs, view_queued_jobs, queue_job, and create_job commands using @click.option('--simulate', is_flag=True, help="Simulate API requests instead of making real ones.").
+
+- When the --simulate flag is provided in the command, it will set simulate=True in the corresponding command function.
+- If the flag is not provided, simulate=False will be the default, and the client will behave as it normally would when making real API requests
+
+``` 
+jobbr view-jobs --simulate 
+```
 
 ## Configuration
 The tool uses the following environment variables for API authentication and configuration:
@@ -75,6 +84,8 @@ The tool uses the following environment variables for API authentication and con
 export JOBBR_API_URL="https://api.example.com"
 export JOBBR_API_KEY="your_api_key"
 ```
+
+
 
 ## Logs 
 
