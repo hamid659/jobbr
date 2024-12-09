@@ -1,16 +1,28 @@
-# Solution for jobbr
+# Jobbr - Job Management CLI Tool
 
-## What this app does?
-Jobbr is a command-line tool to interact with a job management API. It allows users to view, create, and manage jobs and job queues seamlessly.
+### Overview
+Jobbr is a command-line tool that interacts with a job management API. It allows users to seamlessly manage jobs and job queues by providing commands to view, create, update, delete, and queue jobs.
+---
+
+## Table of Contents
+
+1. [Setup](#setup)
+2. [Dependencies](#dependencies)
+3. [Usage](#usage)
+4. [Testing](#testing)
+5. [API Simulation](#api-simulation)
+6. [Configuration](#configuration)
+7. [Logs](#logs)
+
+--- 
 
 ## Setup
-
-- Clone the repository:
-``` 
+### 1. Clone the repository:
+```bash
 git clone https://github.com/hamid659/jobbr.git
 ```
-
-- Navigate to the project directory (the outer jobbr folder, containing setup.py and requirements.txt):
+### 2 Navigate to the project directory 
+(the outer jobbr folder, containing setup.py and requirements.txt):
 ```
 cd jobbr
 ```
@@ -19,24 +31,18 @@ The outer folder is the project root, containing setup.py and requirements.txt.
 The inner folder (jobbr/) is the Python package, containing the tool's code (e.g., cli.py and api_client.py).
 
 
-- Install the package:
+### 3 Install the package:
 ```
 pip install .
 ```
 
-
-
 ### Dependencies
-dependencies are automatically installed when you run:
-``` 
-pip install .  
-```
+dependencies are automatically installed when you run: ``` pip install .  ```
 
 If you encounter any issues or prefer to install the dependencies separately, you can manually install the required dependencies using:
 ```
 pip install -r requirements.txt
 ```
-
 
 ## Usage
 Once installed, the jobbr CLI becomes available.
