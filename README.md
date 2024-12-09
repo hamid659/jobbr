@@ -66,7 +66,7 @@ Commands
 ``` jobbr queue-job <job_id> ```
 
 - Create a Job
-``` jobbr create-job --name <job_name> --priority <priority_level> ```
+``` jobbr create-job --name <job_name> --type <priority_level> ```
 
 - Update a Job
 ``` jobbr update-job <job_id> ```
